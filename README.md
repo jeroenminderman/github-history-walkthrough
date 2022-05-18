@@ -50,9 +50,32 @@ This should show the file as being present (at this point in the history). To sw
 ```{console}
 git switch -
 ```
+  
+
+__Would we like to add another similar examples of including keys/passwords in files?__
+  
+
 
 ## .gitignore to avoid commiting specific files or folders
 
-... and its limitations
+The `.gitignore` file in the root of a git repository is essentially a list of rules of specific files, file types, directories or file patterns that will always be excluded from any commits.  
+Any references to files or directory names in this list will not be included in any commits _from the point they are added to the list_.
+Format of this file is really quite straightforward but some further details and examples can be found [here](https://www.atlassian.com/git/tutorials/saving-changes/gitignore), for example.
+
+Note that up to commit XXX, any files added to the `data/secure/` folder can easily be added to any commits, and therefore be accidentally pushed to the remote repository.  
+To address this, we can add the whole of the the `data/secure/` folder to the `.gitignore` file, by adding the line
+
+```
+data/secure/
+```
+
+to the `.gitignore` file, and committing and pushing that change. Note the forward slash at the end of the line above - this is crucial to ensure the _entire contents_ of this folder is ignored, rather than just a single file.
+
+With this new change to the `.gitignore`, we can add any files we like to this folder in our _local_ repository, but these changes will not be added to any commits, avoiding accidental commits of these.  
+To illustrate, we can add a new sensitive file:
+
+```
+tu
+```
 
 ## Rewriting repo history to permanently remove specific files
