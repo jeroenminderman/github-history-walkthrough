@@ -31,10 +31,10 @@ Going down to commit #187804a, we can see that at that point the repo had a file
 From this point onwards, this file was removed locally and the changes pushed to the remote repository:
 
 ```{console}
-rm data/secure/personal_data.csv
-git add data/secure/personal_data.csv
-git commit -m "Oops I added a file that shouldn't be included, I have now removed it locally"
-git push
+> rm data/secure/personal_data.csv
+> git add data/secure/personal_data.csv
+> git commit -m "Oops I added a file that shouldn't be included, I have now removed it locally"
+> git push
 ```
 
 This resulted in commit [#7a2b4cd](https://github.com/Vanuatu-National-Statistics-Office/vnso-github-training/commit/7a2b4cd54263e20dd8ba9a671de840424576352f); where the file in question no longer exists.  
@@ -42,13 +42,13 @@ However, it is important to stress that as per the above, all that is needed to 
 Indeed, in your local repository you can "checkout" any of the previous commits, which allows you to browse previous versions of the working directory, using the following CLI commands:
 
 ```{console}
-git checkout 18780a4
-ls data/secure
+> git checkout 18780a4
+> ls data/secure
 ```
 This should show the file as being present (at this point in the history). To switch the local repository to the most current state:
 
 ```{console}
-git switch -
+> git switch -
 ```
   
 
@@ -75,7 +75,22 @@ With this new change to the `.gitignore`, we can add any files we like to this f
 To illustrate, we can add a new sensitive file:
 
 ```
-tu
+> touch data/secure/new_data_kept_locally.csv
 ```
+Running `git status`, `git add .` and `git commit -m "Added data to data/secure/ folder"` now reports that nothing has been added to the repository - because the folder `data/secure` and all its content are being ignored.
+
+```
+> git add .
+> git commit -m "Added data to data/secure/ folder"
+
+On branch building_history
+Your branch is up to date with 'origin/building_history'.
+
+nothing to commit, working tree clean
+
+```
+This gives a good way to work with sensitive data locally while keeping this out of the remote repository.
+In a directory structure that splits `data/open` and `data/secure`, it is good practice to ensure the latter folder is always included in the `.gitignore` file from the start of any work on the repository.  
+It is also important to stress that if this addition is made to the `.gitignore` file _after files had already been included in that folder_, these files are still recoverable through the repository history as detailed above.
 
 ## Rewriting repo history to permanently remove specific files
