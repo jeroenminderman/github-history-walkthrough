@@ -8,3 +8,5 @@ df1_sport <- personal_data %>%
   tally(n)
 
 df1_sport
+
+open_data <- read_csv("data/open/mtcars.csv")
