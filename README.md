@@ -24,7 +24,7 @@ We can look at the state of the repository at previous commits by clicking on th
 
 <img align="center" src="images/browse_previous_commit.jpg" width=75%>
   
-Going down to commit #187804a, we can see that at that point the repo had a file `data/secure/personal_data.csv`:  
+Going down to commit [#08e533a](https://github.com/Vanuatu-National-Statistics-Office/vnso-github-training/commit/08e533a64ec1d3a7afc748332cd227a6d0e88ed5), we can see that at that point the repo had a file `data/secure/personal_data.csv`:  
 
 <img align="center" src="images/file_in_secure_folder.jpg" width=75%>  
   
@@ -37,12 +37,12 @@ From this point onwards, this file was removed locally and the changes pushed to
 > git push
 ```
 
-This resulted in commit [#7a2b4cd](https://github.com/Vanuatu-National-Statistics-Office/vnso-github-training/commit/7a2b4cd54263e20dd8ba9a671de840424576352f); where the file in question no longer exists.  
+This resulted in commit [#d42605b](https://github.com/Vanuatu-National-Statistics-Office/vnso-github-training/commit/d42605bb65c9d2d35edeb35cf280f3f7bf6e2cd0); where the file in question no longer exists.  
 However, it is important to stress that as per the above, all that is needed to retrieve the deleted file is to go to the history, browse the commit before the file was deleted, and viewing or downloading its source - in a public repository anyone could do this.
 Indeed, in your local repository you can "checkout" any of the previous commits, which allows you to browse previous versions of the working directory, using the following CLI commands:
 
 ```{console}
-> git checkout 18780a4
+> git checkout 08e533a
 > ls data/secure
 ```
 This should show the file as being present (at this point in the history). To switch the local repository to the most current state:
@@ -91,6 +91,91 @@ nothing to commit, working tree clean
 ```
 This gives a good way to work with sensitive data locally while keeping this out of the remote repository.
 In a directory structure that splits `data/open` and `data/secure`, it is good practice to ensure the latter folder is always included in the `.gitignore` file from the start of any work on the repository.  
-It is also important to stress that if this addition is made to the `.gitignore` file _after files had already been included in that folder_, these files are still recoverable through the repository history as detailed above.
+__It is also important to stress that if this addition is made to the `.gitignore` file _after files had already been included in that folder_, these files are still recoverable through the repository history as detailed above.__ In the following section we give one potential way to address this.
 
 ## Rewriting repo history to permanently remove specific files
+
+To permanently erase a file from a repository, so it is no longer present in the history, we need to essentially re-write the repository history. In effect, we need to go through each commit and "rebuild" the repository to remove all evidence of the file.  
+There are several ways to do this and we cannot go into all of them - for reference the [Git/Github documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) gives a lot more detail. 
+
+The method we use here is the `git filter-repo` command. This essentially iteratively rebuilds the repo history to remove everything relating to the given file.  
+Note that this assumes that the actual file has already been removed locally from the repository (if you want to keep it, you may have to temporarily remove it and add it back in after you've run `git filter-repo` and added the folder to the `.gitignore` file as above):
+```
+> rm data/secure/personal_data.csv
+```
+The `git filter-repo` command assumes you are working on a "fresh clone" of the respository - this is presumably to avoid any issues with unsaved changes and/or avoid critial merge conflicts with others that may be working with the same remote repository. In the command below this is bypassed by the addition of the `--force` argument, but note that a real life condition you might want to avoid using this.
+
+```
+> git filter-repo --force --invert-paths --path data/secure/personal_data.csv
+Parsed 20 commitsHEAD is now at e49f111 Further additions to README
+Enumerating objects: 62, done.
+Counting objects: 100% (62/62), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (56/56), done.
+Writing objects: 100% (62/62), done.
+Total 62 (delta 18), reused 1 (delta 0), pack-reused 0
+
+New history written in 0.37 seconds; now repacking/cleaning...
+Repacking your repo and cleaning out old unneeded objects
+Completely finished after 0.99 seconds.
+
+```
+If you now inspect the `git log` for the repository and pick one that should include the `personal_data.csv` file, you will see that the data is no longer available even if you checkout that commit. The only file present is the one that is only kept locally (not committed because of `.gitignore`.) _(note that the history log and commit references given here will not be entirely correct any more, but illustrate the process)_
+
+```
+git log --oneline
+e49f111 (HEAD -> building_history) Further additions to README
+b3f65aa Added some text around .gitignore to walkthrough
+3e9492b Added data-secure folder to gitignore
+649790e Continuing tutorial text in README, added some images
+721f61b Started writing tutorial in README.md
+115af2c Adding some changes to the processed_data.R file
+33f5448 Added initial data file to data/open/
+e35920d Adapted read_csv call to reflect new directory structure
+dc76849 Moved personal_data.csv to  secure folder
+7451488 (main, backup_working) Cleaning up some local merge issues
+79c8c46 Merge branch 'main' of https://github.com/Vanuatu-National-Statistics-Office/vnso-github-training
+6c2ba53 Merge pull request #1 from Vanuatu-National-Statistics-Office/data-upload
+5a43281 Revert "Edited README, added .vscode/ to gitignore"
+c53bdf8 (data-upload) add R code
+acf98b1 add data
+6ed1192 (jeroen_old) Edited README, added .vscode/ to gitignore
+2aa5ae0 Initial commit
+
+> git checkout dc76849
+Note: switching to 'dc76849'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+HEAD is now at dc76849 Moved personal_data.csv to  secure folder
+
+> ls data/secure
+new_data_kept_locally.csv
+
+```
+
+We switch back to the most current repo state:
+
+```
+git switch -
+```
+
+It is important to now push all these commit re-writes to the remote repository, including all change:
+
+```
+> git push --force --all
+Enumerating objects: 58, done.
+Counting objects: 100% (58/58), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (38/38), done.
+Writing objects: 100% (58/58), 104.70 KiB | 52.35 MiB/s, done.
+Total 58 (delta 14), reused 56 (delta 14), pack-reused 0
+remote: Resolving deltas: 100% (14/14), done.
+To https://github.com/Vanuatu-National-Statistics-Office/vnso-github-training.git
+ + f86940d...e49f111 building_history -> building_history (forced update)
+ + 29d7297...c53bdf8 data-upload -> data-upload (forced update)
+ + 7191755...7451488 main -> main (forced update)
+
+```
