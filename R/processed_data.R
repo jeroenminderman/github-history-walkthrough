@@ -1,7 +1,6 @@
 library(tidyverse)
 
-personal_data <- read_csv("data/personal_data.csv")
-
+personal_data <- read_csv("data/secure/personal_data.csv")
 
 df1_sport <- personal_data %>%
   group_by(Sport) %>%
@@ -9,3 +8,5 @@ df1_sport <- personal_data %>%
   tally(n)
 
 df1_sport
+
+open_data <- read_csv("data/open/mtcars.csv")
