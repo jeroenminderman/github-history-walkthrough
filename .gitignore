@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # VS Code files
 .vscode/
+
+# Ignore all files in 'data/secure/' folder:
+data/secure/
