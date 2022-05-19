@@ -6,9 +6,10 @@ A repository to hold some introductory training support, tutorials and materials
 1. [Introduction](#introduction)
 2. [Note on the use of CLI commands in this walkthrough](#cli)
 3. [Finding sensitive data file, removing locally, and pushing](#removeandpush)
-4. [Rewriting repo history to permanently remove specific files](#historyrewrite)
-5. [Caveats](#caveats)
-6. [Exercise](#exercise)
+4. [.gitignore to avoid commiting specific files or folders](#gitignore)
+5. [Rewriting repo history to permanently remove specific files](#historyrewrite)
+6. [Caveats](#caveats)
+7. [Exercise](#exercise)
 
 ## Introduction<a id="introduction"></a>
 
@@ -66,13 +67,17 @@ Indeed, in your local repository you can "checkout" any of the previous commits,
 > git checkout 08e533a
 > ls data/secure
 ```
-This should show the file as being present (at this point in the history). To switch the local repository to the most current state:
+This should show the file as being present (at this point in the history). 
+
+> Note that after you've "checked out" a previous commit, you are no longer working on the most recent (`HEAD`) of the repository (you will see a warning related to this when you checked out the commit as above). 
+
+To switch the local repository back to the most current state:
 
 ```{console}
 > git switch -
 ```
 
-    ## .gitignore to avoid commiting specific files or folders
+## .gitignore to avoid commiting specific files or folders <a id="gitignore"></a>
 
 The `.gitignore` file in the root of a git repository is essentially a list of rules of specific files, file types, directories or file patterns that will always be excluded from any commits.  
 Any references to files or directory names in this list will not be included in any commits _from the point they are added to the list_.
