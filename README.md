@@ -1,12 +1,12 @@
 # vnso-github-training
 A repository to hold some introductory training support, tutorials and materials for Git/Github for VNSO
 
-## Removing sensitive data from repositories
+# Removing sensitive data from repositories
 
 Once local changes or additions are "pushed" to a remote repository, they become part of the remote's history and are therefore not easily removed permanently.  
-This can become an issue is we need to deal with data files that contain sensitive or personal data that have erroneously been committed and pushed to a repository.  
+This can become an issue if we need to deal with data files that contain sensitive or personal data that have erroneously been committed and pushed to a repository.  
   
-This repository provides a "toy" example of such a case with dummy sensitive data in `data/secure/`.  
+This repository provides a "toy" example of such a case with a dummy sensitive data file previously uploaded to `data/secure/`.  
 
 We will use the history of this repository to demonstrate:  
 
@@ -14,9 +14,20 @@ We will use the history of this repository to demonstrate:
 - A simple means to ensure files in certain local directories will not be accidentally uploaded to the repository (using `.gitignore`); as well as the limitations of doing that.
 - One method to remove such files _permanently_ and rewrite the repository's history to ensure it cannot be retrieved in the remote.
 
+>## Note on the use of CLI commands in this walkthrough
+>Throughout this walkthrough, we use and illustrate Command Line Interface (CLI) commands to perform all local operations such as adding and removing files, committing to Git and pushing to Github. Note that most of these operations can also be done through various IDE interfaces (e.g. Windows File Explorer for file operations, and Git actions through e.g. the RStudio IDE interface). However, there are limits to the IDE option, and getting used to using the CLI for this purpose is recommended - for example the key `git filter-repo` command as described below is likely not implemented in any IDE.  
+In this walkthrough, wherever we present a code block that looks like this - 
+>```
+> git log
+>```
+>We assume this to mean commands that are entered into a CLI prompt (`>`), ___in the root of the Git repository we are working on___. There are various options for this depending on your operating system, e.g. [bash](https://www.freecodecamp.org/news/linux-command-line-bash-tutorial/) on Linux, [Terminal](https://support.apple.com/en-gb/guide/terminal/welcome/mac) in MacOS, and [git-bash](https://www.atlassian.com/git/tutorials/git-bash) on Windows. Note that RStudio has a built-in terminal interface which you can use in place of this for convenience.  
+A publicly available introduction to CLI (third party) can be found [here](https://blog.testproject.io/2021/03/30/a-beginners-guide-to-command-line-interface-cli/) and [here](https://www.atlassian.com/git/tutorials/git-bash). 
+
 ## Finding sensitive data file, removing locally, and pushing
 
-We can see the commit history for an online repository by going to "commits" at the top of the file list under the Code tab:
+Note that in the current (most recent) state of the repository, the sensitive file in question (`data/secure/personal_data.csv`) has already been removed locally and this change has been pushed to the remote repository.
+
+We can see the commit history for the repository by going to "commits" at the top of the file list under the Code tab:
 
 <img align="center" src="images/commit_history.jpg" width=75%>
   
@@ -28,7 +39,8 @@ Going down to commit [#08e533a](https://github.com/Vanuatu-National-Statistics-O
 
 <img align="center" src="images/file_in_secure_folder.jpg" width=75%>  
   
-From this point onwards, this file was removed locally and the changes pushed to the remote repository:
+
+From this point onwards, this file was removed locally and the changes pushed to the remote repository.
 
 ```{console}
 > rm data/secure/personal_data.csv
@@ -51,7 +63,7 @@ This should show the file as being present (at this point in the history). To sw
 > git switch -
 ```
 
-## .gitignore to avoid commiting specific files or folders
+    ## .gitignore to avoid commiting specific files or folders
 
 The `.gitignore` file in the root of a git repository is essentially a list of rules of specific files, file types, directories or file patterns that will always be excluded from any commits.  
 Any references to files or directory names in this list will not be included in any commits _from the point they are added to the list_.
