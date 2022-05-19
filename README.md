@@ -20,7 +20,7 @@ We can see the commit history for an online repository by going to "commits" at 
 
 <img align="center" src="images/commit_history.jpg" width=75%>
   
-We can look at the state of the repository at previous commits by clicking on the <> buttons, "Browse the repository at this point in the history:  
+We can look at the state of the repository at previous commits by clicking on the <> buttons, "Browse the repository at this point in the history":  
 
 <img align="center" src="images/browse_previous_commit.jpg" width=75%>
   
