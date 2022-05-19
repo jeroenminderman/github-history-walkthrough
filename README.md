@@ -50,11 +50,6 @@ This should show the file as being present (at this point in the history). To sw
 ```{console}
 > git switch -
 ```
-  
-
-__Would we like to add another similar examples of including keys/passwords in files?__
-  
-
 
 ## .gitignore to avoid commiting specific files or folders
 
