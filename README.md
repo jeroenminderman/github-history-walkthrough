@@ -1,13 +1,3 @@
----
-title: "VNSO Github Training"
-date: "`r format(Sys.time(), '%B %d, %Y')`"
-output: 
-  html_document:
-    toc: true # table of content true
-    toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
-    number_sections: true  ## if you want number sections at each table header
----
-
 # vnso-github-training
 A repository to hold some introductory training support, tutorials and materials for Git/Github for VNSO
 
@@ -158,7 +148,6 @@ b3f65aa Added some text around .gitignore to walkthrough
 115af2c Adding some changes to the processed_data.R file
 33f5448 Added initial data file to data/open/
 e35920d Adapted read_csv call to reflect new directory structure
-dc76849 Moved personal_data.csv to  secure folder
 7451488 (main, backup_working) Cleaning up some local merge issues
 79c8c46 Merge branch 'main' of https://github.com/Vanuatu-National-Statistics-Office/vnso-github-training
 6c2ba53 Merge pull request #1 from Vanuatu-National-Statistics-Office/data-upload
