@@ -22,7 +22,7 @@ We will use the history of this repository to demonstrate:
 
 - Even if a file has been previously removed locally and changes pushed to a repo, the file can be retrieved online by browsing the remote's history
 - A simple means to ensure files in certain local directories will not be accidentally uploaded to the repository (using `.gitignore`); as well as the limitations of doing that.
-- One method to remove such files _permanently_ and rewrite the repository's history to ensure it cannot be retrieved in the remote.
+- One method to remove such files _more comprehensively_ and rewrite the repository's history to ensure it cannot be retrieved in the remote.
 
 >## Note on the use of CLI commands in this walkthrough <a id="cli"></a>
 >Throughout this walkthrough, we use and illustrate Command Line Interface (CLI) commands to perform all local operations such as adding and removing files, committing to Git and pushing to Github. Note that most of these operations can also be done through various IDE interfaces (e.g. Windows File Explorer for file operations, and Git actions through e.g. the RStudio IDE interface). However, there are limits to the IDE option, and getting used to using the CLI for this purpose is recommended - for example the key `git filter-repo` command as described below is likely not implemented in any IDE.  
